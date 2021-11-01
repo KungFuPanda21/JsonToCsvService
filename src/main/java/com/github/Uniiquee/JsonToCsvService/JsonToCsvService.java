@@ -11,12 +11,20 @@ import jdk.jshell.spi.ExecutionControl;
 
 @Singleton
 public class JsonToCsvService {
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
     public String convertJsonToCsv(String jsonArrayInput) throws JsonProcessingException {
+        return  convertJsonToCsv(jsonArrayInput, false);
+    }
+
+    public String convertJsonToCsv(String jsonArrayInput, boolean addCsvHeader) throws JsonProcessingException {
         JsonNode jsonArray = new ObjectMapper().readTree(jsonArrayInput);
         JsonNode firstArrayElement = jsonArray.elements().next();
         CsvSchema schema = getCsvSchemaBasedOnFirstElement(firstArrayElement);
+        if(addCsvHeader){
+            schema = schema.withHeader();
+        }
         CsvMapper csvMapper = new CsvMapper();
         ObjectWriter csvWriter = csvMapper.writerFor(JsonNode.class).with(schema);
         return csvWriter.writeValueAsString(jsonArray).trim();
