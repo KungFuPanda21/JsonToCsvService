@@ -18,6 +18,14 @@ public class JsonToCsvService {
         return  convertJsonToCsv(jsonArrayInput, false);
     }
 
+    /**
+     * Converts a json array to a csv list seperated by ','. The parameter addCsvHeader
+     * indicates if the resulting csv will contain a header in the first line.
+     * @param jsonArrayInput
+     * @param addCsvHeader
+     * @return The converted csv
+     * @throws JsonProcessingException
+     */
     public String convertJsonToCsv(String jsonArrayInput, boolean addCsvHeader) throws JsonProcessingException {
         JsonNode jsonArray = new ObjectMapper().readTree(jsonArrayInput);
         JsonNode firstArrayElement = jsonArray.elements().next();
